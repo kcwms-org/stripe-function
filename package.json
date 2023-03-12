@@ -1,7 +1,7 @@
 {
     "name": "stripe-checkout-service",
     "version": "1.0.0",
-    "description": "dev site that wraps call to stripe-checkout-session",
+    "description": "proxy site that interacts with stripe's low code checkout",
     "main": "service",
     "scripts": {},
     "author": "",
