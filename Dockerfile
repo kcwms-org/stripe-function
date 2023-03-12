@@ -11,7 +11,7 @@ COPY . .
 # start our app
 EXPOSE 80
 EXPOSE 443
-CMD ["node", "create-checkout-session-endpoint.js"]
+CMD ["node", "service.js"]
 
 
 
