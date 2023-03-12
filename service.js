@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-if ((process.env.ENVIRONMENT || "DEVELOPMENT") === "DEVELOPMENT") {
+if ((process.env.MARSHA_API_ALLOWED_ORIGINS || "DEVELOPMENT") === "DEVELOPMENT") {
   app.use(cors());
 }
 app.use(express.json());
@@ -12,7 +12,7 @@ app.use(express.json());
 const PORT_NUMBER = process.env.API_PORT || 80;
 
 app.get('/heart-beat', (req, res) => {
-  res.status(200).send(heartBeat.heart_beat());
+  res.status(200).send(new Date().toISOString());
 });
 
 app.get('/products', async (req, res) => {

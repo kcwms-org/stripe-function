@@ -1,7 +1,7 @@
 # proxy service for calling Stripe checkout
 ## Expectations
 1. Environment Variables
-    1. (OPTIONAL) API_PORT = the port number the internal website runs on. i.e.: the value passed to EXPOSE
+    1. (OPTIONAL) MARSHA_API_ALLOWED_ORIGINS = for CORS support: when empty no CORS configuration is added.
 
 ## Docker
 1. docker build . -t kevcoder/marsha-stripe-node-api
