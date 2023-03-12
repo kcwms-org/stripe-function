@@ -2,7 +2,7 @@
     "name": "stripe-checkout-service",
     "version": "1.0.0",
     "description": "dev site that wraps call to stripe-checkout-session",
-    "main": "create-checkout-session-endpoint",
+    "main": "service",
     "scripts": {},
     "author": "",
     "license": "MIT",

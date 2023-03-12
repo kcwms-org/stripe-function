@@ -15,7 +15,8 @@
                 "API_PORT": "7169"
             },
             "runtimeExecutable": "/home/kevin/.nvm/versions/node/v18.12.1/bin/node",
-            "program": "${workspaceFolder}/create-checkout-session-endpoint"
+            "args": ["watch"],
+            "program": "${workspaceFolder}/service"
         }
     ]
 }
