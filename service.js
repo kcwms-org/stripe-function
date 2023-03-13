@@ -40,9 +40,9 @@ app.post('/create-checkout-session', async (req, res) => {
     success_url: `${payment.domain}${payment.successRoute}`,
     cancel_url: `${payment.domain}${payment.failRoute}`,
   }
-  const redirectUrl = await stripe.checkout.sessions.create(stripePayment);
+  const stripeSession = await stripe.checkout.sessions.create(stripePayment);
 
-  res.json({ url: redirectUrl });
+  res.json({ url: stripeSession.url });
 });
 
 app.listen(PORT_NUMBER, () => console.log(`Running on port ${PORT_NUMBER}`));
