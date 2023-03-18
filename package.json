@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "proxy site that interacts with stripe's low code checkout",
     "main": "service",
-    "scripts": {},
+    "scripts": {
+        "start": "API_PORT=7169 node --watch service.js"
+    },
     "author": "",
     "license": "MIT",
     "dependencies": {
