@@ -1,4 +1,5 @@
 // This is your test secret API key.
+const prodClass = require('./models/product');
 const stripe = require('stripe')('sk_test_51MbyXWAXcHqp4mKL8Kv7HpkftPZJTBafppSgFGwBOEWfmHaFhdjGgwyicikm4xSVXodTKjxB9CMgVJvizu3iwPnB00blSQ4qKF');
 const express = require('express');
 const cors = require('cors');
@@ -9,19 +10,48 @@ if ((process.env.MARSHA_API_ALLOWED_ORIGINS || "DEVELOPMENT") === "DEVELOPMENT")
 }
 app.use(express.json());
 
-const PORT_NUMBER = process.env.API_PORT || 80;
+const PORT_NUMBER = process.env.API_PORT || 8080;
 
+app.get('/', (req, res) => {
+  const routes = [
+    { method: 'GET', path: '/heart-beat' },
+    { method: 'GET', path: '/products/:id?' },
+    { method: 'POST', path: '/create-checkout-session', payload: JSON.stringify(), returns: JSON.stringify([new prodClass.Product()]) }
+
+  ]
+  res.json(routes);
+})
 app.get('/heart-beat', (req, res) => {
   res.status(200).send(new Date().toISOString());
 });
 
-app.get('/products', async (req, res) => {
+app.get('/products/:id?', async (req, res) => {
   const active = req.query.activeOnly || true;
   const limit = req.query.limit || 10;
+  const prodId = req.params.id || false;
 
-  const prods = await stripe.products.list({ limit: limit, active: active, expand: ['data.default_price'] },);
+  let _prods = [];
+  if (!prodId) {
+    _prods = await stripe.products.list(
+      { limit: limit, active: active, expand: ['data.default_price'] },);
+  }
+  else {
+    _prods = { data: [await stripe.products.retrieve(prodId)] };
+  }
+  const products = (_prods.data || [])
+    .map((v, idx, ar) =>
+      new prodClass.Product(v.id,
+        v.name,
+        v.default_price?.id,
+        v.description,
+        (v.default_price.unit_amount || 0) / 100,
+        0,
+        (v.images || [])[0],
+        v.default_price.type,
+        v.metadata)
+    );
 
-  res.json(prods);
+  res.json(products);
 });
 
 app.post('/create-checkout-session', async (req, res) => {
