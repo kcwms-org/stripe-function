@@ -11,6 +11,7 @@
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.18.2",
+        "kvcdr-stripe-view-models": "github:kcwms-org/kvcdr-stripe-view-models",
         "stripe": "^11.13.0"
     }
 }

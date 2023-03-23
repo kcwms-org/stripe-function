@@ -1,5 +1,5 @@
 // This is your test secret API key.
-const prodClass = require('./models/product');
+const prodClass = require('kvcdr-stripe-view-models');
 const stripe = require('stripe')('sk_test_51MbyXWAXcHqp4mKL8Kv7HpkftPZJTBafppSgFGwBOEWfmHaFhdjGgwyicikm4xSVXodTKjxB9CMgVJvizu3iwPnB00blSQ4qKF');
 const express = require('express');
 const cors = require('cors');
@@ -43,10 +43,11 @@ app.get('/products/:id?', async (req, res) => {
       new prodClass.Product(v.id,
         v.name,
         v.default_price?.id,
+        v.unit_label,
         v.description,
         (v.default_price.unit_amount || 0) / 100,
         0,
-        (v.images || [])[0],
+        v.images || [],
         v.default_price.type,
         v.metadata)
     );
