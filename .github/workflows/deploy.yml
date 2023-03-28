@@ -21,7 +21,7 @@ jobs:
      
       - name: Build and Deploy the Docker Image
         run: |
-          docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.docker_image_name }}:latest
+          docker build . --file Dockerfile --tag ${{ secrets.DO_CONTAINER_REGISTRY_PWD }}/${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ secrets.DO_CONTAINER_REGISTRY_PWD }}/${{ env.docker_image_name }}:latest
           echo ${{ secrets.DO_CONTAINER_REGISTRY_PWD }} | docker login ${{ secrets.DO_CONTAINER_REGISTRY_URL }} --username ${{ secrets.DO_CONTAINER_REGISTRY_USER_NAME }} --password-stdin
           docker push ${{ secrets.DO_CONTAINER_REGISTRY_URL }}/kevcoder/kevcoder.com
           docker logout ${{ secrets.DO_CONTAINER_REGISTRY_URL }}
