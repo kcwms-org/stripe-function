@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+env:
+  docker_image_name: kevcoder/stripe-proxy
+  version_major: 2
+  version_minor: 0
+  version_patch: $(date +%s)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }}
