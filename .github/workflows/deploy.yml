@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Deploy Docker image
 
 env:
   docker_image_name: kevcoder/stripe-proxy
@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }}
+      - uses: actions/checkout@v3
+
+      - run: echo $docker_image_name, $version_major, $version_minor, $version_patch
+      - run: docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.docker_image_name }}:latest
+      
+      
