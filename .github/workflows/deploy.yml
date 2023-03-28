@@ -20,10 +20,12 @@ jobs:
       - uses: actions/checkout@v3
      
       - name: Build and Deploy the Docker Image
+        env:
+          DOCKER_REGISTRY: registry.digitalocean.com
         run: |
-          docker build . --file Dockerfile --tag ${{ secrets.DO_CONTAINER_REGISTRY_URL }}/${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ secrets.DO_CONTAINER_REGISTRY_URL }}/${{ env.docker_image_name }}:latest
-          echo ${{ secrets.DO_CONTAINER_REGISTRY_PWD }} | docker login ${{ secrets.DO_CONTAINER_REGISTRY_URL }} --username ${{ secrets.DO_CONTAINER_REGISTRY_USER_NAME }} --password-stdin
-          docker push ${{ secrets.DO_CONTAINER_REGISTRY_URL }}/kevcoder/kevcoder.com
-          docker logout ${{ secrets.DO_CONTAINER_REGISTRY_URL }}
+          docker build . --file Dockerfile --tag ${{ env.DOCKER_REGISTRY }}/${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.DOCKER_REGISTRY }}/${{ env.docker_image_name }}:latest
+          echo ${{ secrets.DO_CONTAINER_REGISTRY_PWD }} | docker login ${{ env.DOCKER_REGISTRY }} --username ${{ secrets.DO_CONTAINER_REGISTRY_USER_NAME }} --password-stdin
+          docker push --all-tags ${{ env.DOCKER_REGISTRY }}/${{ env.docker_image_name }}
+          docker logout ${{ env.DOCKER_REGISTRY }}
       
       
