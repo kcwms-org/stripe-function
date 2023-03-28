@@ -1,7 +1,7 @@
 name: Deploy Docker image
 
 env:
-  docker_image_name: kevcoder/stripe-proxy
+  docker_image_name: kevcoder/stripe-proxy-node
   version_major: 2
   version_minor: 0
   version_patch: $(date +%s)
@@ -18,11 +18,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - run:  echo $(docker_image_name), $(version_major), $(version_minor), $(version_patch)
-        name: Dump Env Variables
-      
-      - run: docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.docker_image_name }}:latest
-        name: Run Docker Build
+     
+      - name: Build and Deploy the Docker Image
+        run: |
+          docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.docker_image_name }}:latest
+          echo ${{ secrets.DO_CONTAINER_REGISTRY_PWD }} | docker login ${{ secrets.DO_CONTAINER_REGISTRY_URL }} --username ${{ secrets.DO_CONTAINER_REGISTRY_USER_NAME }} --password-stdin
+          docker push ${{ secrets.DO_CONTAINER_REGISTRY_URL }}/kevcoder/kevcoder.com
+          docker logout ${{ secrets.DO_CONTAINER_REGISTRY_URL }}
       
       
