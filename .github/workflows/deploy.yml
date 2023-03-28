@@ -19,7 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: echo $docker_image_name, $version_major, $version_minor, $version_patch
+      - run:  echo $(docker_image_name), $(version_major), $(version_minor), $(version_patch)
+        name: Dump Env Variables
+      
       - run: docker build . --file Dockerfile --tag ${{ env.docker_image_name }}:${{ env.version_major }}.${{ env.version_minor }}.${{ env.version_patch }} --tag ${{ env.docker_image_name }}:latest
+        name: Run Docker Build
       
       
